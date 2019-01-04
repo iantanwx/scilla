@@ -146,10 +146,10 @@ let gen_parser (t' : typ) : (Basic.json -> literal) =
         | Some parser -> parser j
         | None -> raise (mk_invalid_json ("Unknown constructor " ^ cn ^ " in ADT JSON"))
       in
-      let rec adt_parser_fix j =
-        let adt_parsers' = (AssocDictionary.update (pp_typ t) adt_parser_fix adt_parsers) in
-        let cn_parsers' = cn_parsers adt_parsers' in
-        adt_parser cn_parsers' j
+      let adt_parser_fix =
+        let cn_parsers' = cn_parsers adt_parsers in
+        let adt_parser' = adt_parser cn_parsers' in
+        adt_parser'
       in
       adt_parser_fix
     | _ -> raise (mk_invalid_json "Invalid type")
